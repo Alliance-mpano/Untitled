@@ -12,15 +12,23 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required:true
+  },
+  googleId: String,
+  verified: {
+    type: Boolean,
+    default: false
   },
   photo: {
     type: String,
     required: false
-  }
+  },
+  
 },{
     timestamps: true
 })
-
+userSchema.methods.verifyPassword = function(password){
+  return bcrypt.compareSync(password, this.password);
+}
 const User = mongoose.model("user", userSchema);
 module.exports = User;
