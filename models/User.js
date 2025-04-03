@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
    unique: true
   },
   password: {
-    type: String
+    type: String,
   },
   googleId: String,
   verified: {
