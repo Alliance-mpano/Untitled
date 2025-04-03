@@ -49,10 +49,10 @@ exports.Login = async (req, res) => {
                 return res.status(400).send('Please verify your email before logging in.');
             }
 
-            return res.send({ error: false, message: "Logged in successfully", token, user });
+            return res.status(200).send({ error: false, message: "Logged in successfully", token });
         }
         
-        return res.send({ error: "Incorrect email or password" });
+        return res.status(401).send({ error: "Incorrect email or password" });
     } catch (error) {
         console.log(error);
         return res.status(400).send(error);

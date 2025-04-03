@@ -27,7 +27,7 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:9000/auth/google/callback",
 }, async(accessToken, refreshToken, profile, done) => {
     try{
-        let user = await User.findOne({googleId: profile.id});
+        let user = await User.findOne({googleId: profile.id}) || await User.findOne({email: profile.emails[0].value});
 
         if(!user) {
             user = await User.create({googleId: profile.id, email: profile.emails[0].value, username: profile.displayName, verified: true});
@@ -35,6 +35,7 @@ passport.use(new GoogleStrategy({
         const token = jwt.sign({id: user._id}, process.env.AUTH_KEY, {expiresIn: "1h"});
         return done(null, {user, token});
     }catch (err){
+        console.log(err)
         return done(err);
     }
 }));
